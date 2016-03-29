@@ -5,6 +5,7 @@ var assert = require('assert')
 var validater = require('..')
 ,_ = require('lodash')
 
+
 describe('exports.types', function() {
 
 	var types = validater.types
@@ -292,6 +293,31 @@ describe('exports.validate', function() {
 		assert(res.errCount === 1)
 		assert(res.result.mt === 5)
 		assert(res.result.mt1 === 'st')
+
+	})
+
+
+	it('string as postValueFilter', function() {
+
+		var obj = _.extend({}, obj0)
+		var rules = _.extend({}, rules0)
+		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
+		rules.mt = {
+			type: ['number', 'string']
+		}
+		rules.mt1 = {
+			type: ['number', 'string']
+			,postValueFilter: 'customPostValueFilter'
+		}
+		obj.mt = 5
+		obj.mt1 = 'st'
+		validater.customPostValueFilter =  function() {
+			return this.value + 'xx'
+		}
+		var res = validate(obj, rules)
+		assert(res.errCount === 1)
+		assert(res.result.mt === 5)
+		assert(res.result.mt1 === 'stxx')
 
 	})
 

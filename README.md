@@ -33,6 +33,16 @@ var rules0 = {
         ,maxLen: 6 //string length max
         ,reg: /^[a-z]{1,7}$/ //string regExp
         ,custom: function() {
+            /*
+                in all functions, context had been set to
+                this === {
+                    rule: validateRuleObject
+                    ,value: value
+                    ,key: key
+                    ,rules: rules
+                    ,targetObj: targetObj
+                }
+            */
             return this.value.indexOf('a') > -1
         }
         ,postValueFilter: function() { //post value filter
@@ -51,6 +61,7 @@ var rules0 = {
     }
     ,mx: {
         type: 'mixed' //if type === "mixed" skip type checking
+        ,postValueFilter: 'customPostValueFilter' //custom validate function
     }
 }
 
@@ -61,6 +72,11 @@ var obj0 = {
     ,nm: 25
     ,arr: []
     ,mx: null
+}
+
+//custom validate function
+validater.customPostValueFilter = function() {
+    return this.value + 'xx'
 }
 
 var validate = require('s-validater').validate

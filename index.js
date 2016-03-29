@@ -171,10 +171,16 @@ function check(_rule, _key, _value, _targetObj, _rules, res) {
  */
 
 function postValueFilter(_rule, _value, _context) {
+
 	let rule = _rule
 	let value = _value
 	let context = _context
-	return rule.postValueFilter?rule.postValueFilter.call(context, value):value
+
+	if(!rule.postValueFilter) return value
+
+	let pv = _.isString(rule.postValueFilter)?exports[rule.postValueFilter]:rule.postValueFilter
+
+	return pv.call(context, value)
 }
 
 /**
