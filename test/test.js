@@ -355,6 +355,26 @@ describe('exports.validate', function() {
 
 	})
 
+	it('not string not function as default', function() {
+
+		var obj = _.extend({}, obj0)
+		var rules = _.extend({}, rules0)
+		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
+		rules.mt = {
+			type: 'number'
+			,default: {x:0}
+			,required: true
+		}
+
+		validater.globCustomDefaultFunction =  function() {
+			return this.rule.type + '0'
+		}
+		var res = validate(obj, rules)
+		assert(res.errCount === 1)
+		assert(res.result.mt.x === 0)
+
+	})
+
 	//end
 })
 

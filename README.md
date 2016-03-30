@@ -59,6 +59,7 @@ var rules0 = {
     }
     ,arr: {
         type: 'array'
+        ,default: [] //other than string or function
     }
     ,mx: {
         type: 'mixed' //if type === "mixed" skip type checking
