@@ -230,38 +230,6 @@ describe('exports.validate', function() {
 
 	})
 
-	it('default value return by function', function() {
-
-		var obj = _.extend({}, obj0)
-		var rules = _.extend({}, rules0)
-		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
-		delete obj.dt
-		rules.dt.required = true
-		rules.dt.default = function() {
-			return this.rule.type
-		}
-
-		var res = validate(obj, rules)
-		assert(res.errCount === 0)
-		assert(res.result.dt === 'date')
-
-	})
-
-	it('default value return by assign', function() {
-
-		var obj = _.extend({}, obj0)
-		var rules = _.extend({}, rules0)
-		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
-		delete obj.dt
-		rules.dt.required = true
-		rules.dt.default = 'jj'
-
-		var res = validate(obj, rules)
-		assert(res.errCount === 0)
-		assert(res.result.dt === 'jj')
-
-	})
-
 	it('required and default undefined', function() {
 
 		var obj = _.extend({}, obj0)
@@ -297,7 +265,7 @@ describe('exports.validate', function() {
 	})
 
 
-	it('string as postValueFilter', function() {
+	it('global function as postValueFilter', function() {
 
 		var obj = _.extend({}, obj0)
 		var rules = _.extend({}, rules0)
@@ -321,7 +289,7 @@ describe('exports.validate', function() {
 
 	})
 
-	it('string as customValidateFunction', function() {
+	it('global function as custom Validate Function', function() {
 
 		var obj = _.extend({}, obj0)
 		var rules = _.extend({}, rules0)
@@ -346,6 +314,44 @@ describe('exports.validate', function() {
 		assert(res.errCount === 2)
 		assert(res.errs[1] === 'custom validation fail;')
 		assert(res.result.mt1 === 'xx')
+
+	})
+
+	it('function as default', function() {
+
+		var obj = _.extend({}, obj0)
+		var rules = _.extend({}, rules0)
+		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
+		rules.mt = {
+			type: ['number', 'string']
+			,default: function() {
+				return 2
+			}
+			,required: true
+		}
+		var res = validate(obj, rules)
+		assert(res.errCount === 1)
+		assert(res.result.mt === 2)
+
+	})
+
+	it('global function as default', function() {
+
+		var obj = _.extend({}, obj0)
+		var rules = _.extend({}, rules0)
+		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
+		rules.mt = {
+			type: 'number'
+			,default: 'globCustomDefaultFunction'
+			,required: true
+		}
+
+		validater.globCustomDefaultFunction =  function() {
+			return this.rule.type + '0'
+		}
+		var res = validate(obj, rules)
+		assert(res.errCount === 1)
+		assert(res.result.mt === 'number0')
 
 	})
 

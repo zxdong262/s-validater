@@ -132,8 +132,8 @@ function check(_rule, _key, _value, _targetObj, _rules, res) {
 	//should we set a default value
 	else if( value === undefined && rule.required ) {
 		if(rule.default === undefined) throw('default value required', key, rule)
-		if(typeof rule.default === 'function') rule.default = rule.default.call(context)
-		res.result[key] = rule.default
+		let df = _.isString(rule.default) ? exports[rule.default].call(context) : rule.default.call(context)
+		res.result[key] = df
 		return res
 	}
 

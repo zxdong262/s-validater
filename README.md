@@ -54,7 +54,7 @@ var rules0 = {
         ,required: true
         ,min: 20 //number max
         ,max: 30 //number min
-        ,default: 25 //default value not by function return
+        ,default: 'globCustomDefaultFunction' //default value by global function
         ,custom: 'customValidateFunction'
     }
     ,arr: {
@@ -83,6 +83,11 @@ validater.customPostValueFilter = function() {
 //custom validate function
 validater.customValidateFunction = function() {
     return this.value === 24
+}
+
+//custom default function
+validater.globCustomDefaultFunction = function() {
+    return this.value + 24
 }
 
 var validate = require('s-validater').validate
