@@ -321,5 +321,34 @@ describe('exports.validate', function() {
 
 	})
 
+	it('string as customValidateFunction', function() {
+
+		var obj = _.extend({}, obj0)
+		var rules = _.extend({}, rules0)
+		obj.st = 'zzzzzzzzzzzzzzzzzzzzza'
+		rules.mt = {
+			type: ['number', 'string']
+			,custom: 'customValidateFunction'
+		}
+		rules.mt1 = {
+			type: ['number', 'string']
+			,custom: 'customValidateFunction'
+		}
+
+		obj.mt = 26
+		obj.mt1 = 'xx'
+
+		validater.customValidateFunction =  function() {
+			return this.value === 'xx' || this.value === 25
+		}
+		var res = validate(obj, rules)
+
+		assert(res.errCount === 2)
+		assert(res.errs[1] === 'custom validation fail;')
+		assert(res.result.mt1 === 'xx')
+
+	})
+
+	//end
 })
 

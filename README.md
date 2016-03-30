@@ -55,6 +55,7 @@ var rules0 = {
         ,min: 20 //number max
         ,max: 30 //number min
         ,default: 25 //default value not by function return
+        ,custom: 'customValidateFunction'
     }
     ,arr: {
         type: 'array'
@@ -74,9 +75,14 @@ var obj0 = {
     ,mx: null
 }
 
-//custom validate function
+//custom PostValueFilter function
 validater.customPostValueFilter = function() {
     return this.value + 'xx'
+}
+
+//custom validate function
+validater.customValidateFunction = function() {
+    return this.value === 24
 }
 
 var validate = require('s-validater').validate

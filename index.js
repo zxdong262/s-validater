@@ -215,11 +215,13 @@ function checkProps (_rule, _value, _context) {
 		if(!isMax) errs += 'length more than ' + rule.maxLen + ';'
 		if(!isReg) errs += 'format not right;'
 	}
-
-	let isCust = (rule.custom? rule.custom.call(context) : true)
-	if(!isCust) errs += 'custom validation fail;'
-
-	b = b && isCust
+	
+	if(rule.custom) {
+		let cusf = _.isString(rule.custom)?exports[rule.custom]:rule.custom
+		let isCust = cusf.call(context)
+		if(!isCust) errs += 'custom validation fail;'
+		b = b && isCust
+	}
 
 	return {
 		errs: errs
