@@ -4,7 +4,7 @@
 var assert = require('assert')
 var validater = require('..')
 ,_ = require('lodash')
-
+,co = require('co')
 
 describe('exports.types', function() {
 
@@ -200,6 +200,23 @@ describe('exports.validate', function() {
 
 	})
 
+	it('no requirement', function() {
+
+		var obj = {
+			xx: 'xx'
+		}
+		var rules = {
+			xx: {
+				type: 'string'
+			}
+		}
+
+		var res = validate(obj, rules)
+		assert(res.errCount === 0)
+		assert(res.result.xx === 'xx')
+
+	})
+
 	it('custom fail', function() {
 
 		var obj = _.extend({}, obj0)
@@ -372,6 +389,71 @@ describe('exports.validate', function() {
 		var res = validate(obj, rules)
 		assert(res.errCount === 1)
 		assert(res.result.mt.x === 0)
+
+	})
+
+	//end
+})
+
+describe('exports.validatePromise', function() {
+
+	var validate = validater.validatePromise
+
+	it('promise ok', function(done) {
+
+		var obj = {
+			xt: 'ddd'
+		}
+		var rules = {
+			// xt: {
+			// 	type: 'string'
+			// 	,required: true
+			// }
+		}
+
+		rules.mt = {
+			type: 'string'
+			,default: 'globCustomDefaultFunction'
+			,custom: 'globCustomValidateFunction'
+			,required: true
+			,postValueFilter: 'globCustomPostFunction'
+		}
+
+		rules.bt = {
+			type: 'string'
+			,default: function() {
+				return Promise.resolve(this.rule.type + '0')
+			}
+			,custom: function() {
+				return Promise.resolve(this.value === 'string0')
+			}
+			,required: true
+			,postValueFilter: function(value) {
+				return Promise.resolve(value + 'b')
+			}
+		}
+
+		validater.globCustomDefaultFunction =  function() {
+			return Promise.resolve(this.rule.type + '0')
+		}
+		validater.globCustomValidateFunction =  function() {
+			return Promise.resolve(this.value === 'string0')
+		}
+		validater.globCustomPostFunction =  function(value) {
+			return Promise.resolve(value + 'a')
+		}
+
+		co(validate(obj, rules))
+		.then(function(res) {
+			assert(res.errCount === 0)
+			assert(res.result.mt === 'string0a')
+			assert(res.result.bt === 'string0b')
+			done()
+		}, function(e) {
+			console.log(e)
+			//done()
+		})
+
 
 	})
 
