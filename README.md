@@ -1,4 +1,6 @@
 # s-validater
+[![Build Status](https://travis-ci.org/zxdong262/s-validater.svg?branch=master)](https://travis-ci.org/zxdong262/s-validater)
+
 a validate lib for nodejs
 
 ## feature
