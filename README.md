@@ -4,7 +4,7 @@
 a validate lib for nodejs
 
 ## feature
-- type checking: string, date, number, array, or plain object
+- type checking: boolean, string, date, number, array, or plain object
 - validation full result: error, errorFilds, effective data collection
 - custom validation function
 - string length(min, max), number(min, max), RegExp check

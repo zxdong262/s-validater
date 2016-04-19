@@ -5,6 +5,7 @@ var targetObj = { //the data to be validate
     name: 'Lexi Bell'
     ,sex: 'alien'
     ,propNotInRules: 'will be ignored'
+    ,isPublic: true
 }
 
 var rules = {
@@ -45,6 +46,9 @@ var rules = {
             return this.rule.customRange.join(',').indexOf(this.value) > -1 && this.value.indexOf(',') === -1
         }
     }
+    ,isPublic: {
+      type: 'boolean'
+    }
 }
 
 var validate = require('s-validater').validate
@@ -59,7 +63,8 @@ res ===
   errFields: [ 'sex' ],
   result: {
      createTime: Tue Mar 29 2016 20:59:42 GMT+0800 (CST),
-     name: 'Lexi Bell'
+     name: 'Lexi Bell',
+     isPublic: true
   } 
 } 
 

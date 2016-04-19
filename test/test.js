@@ -45,6 +45,15 @@ describe('exports.types', function() {
 		)
 	})
 
+	it('boolean', function() {
+		assert(
+			types.boolean(true) &&
+			types.boolean(false) &&
+			!types.boolean({}) &&
+			!types.boolean(0)
+		)
+	})
+
 })
 
 
@@ -84,6 +93,13 @@ describe('exports.checkType', function() {
 		assert(
 			checkType([], 'array') &&
 			!checkType({}, 'array')
+		)
+	})
+
+	it('boolean', function() {
+		assert(
+			checkType(true, 'boolean') &&
+			!checkType({}, 'boolean')
 		)
 	})
 
@@ -167,6 +183,9 @@ describe('exports.validate', function() {
 		,mx: {
 			type: 'mixed'
 		}
+		,isIt: {
+			type: 'boolean'
+		}
 	}
 
 	var obj0 = {
@@ -177,11 +196,25 @@ describe('exports.validate', function() {
 		,nm: 25
 		,arr: []
 		,mx: null
+		,isIt: true
 	}
 
 	it('type not match', function() {
 		var obj = _.extend({}, obj0)
 		var rules = _.extend({}, rules0)
+		var res = validate(obj, rules)
+		assert(res.errCount === 1)
+		assert(res.errs[0] === 'type not match')
+
+	})
+
+	it('boolean fail', function() {
+
+		var obj = _.extend({}, obj0)
+		var rules = _.extend({}, rules0)
+		obj.st = 'aaaaaaaaaazaaaaaaaaa'
+		obj.dt = new Date()
+		obj.isIt = 1
 		var res = validate(obj, rules)
 		assert(res.errCount === 1)
 		assert(res.errs[0] === 'type not match')
