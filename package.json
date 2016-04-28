@@ -1,6 +1,6 @@
 {
 	"name": "s-validater"
-	,"version": "2.1.0"
+	,"version": "2.2.0"
 	,"description": "a validate lib for nodejs"
 	,"main": "index.js"
 	,"scripts": {

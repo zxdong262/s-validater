@@ -204,7 +204,7 @@ describe('exports.validate', function() {
 		var rules = _.extend({}, rules0)
 		var res = validate(obj, rules)
 		assert(res.errCount === 1)
-		assert(res.errs[0] === 'type not match')
+		assert(res.errs[0].indexOf('type not match') > -1)
 
 	})
 
@@ -217,7 +217,7 @@ describe('exports.validate', function() {
 		obj.isIt = 1
 		var res = validate(obj, rules)
 		assert(res.errCount === 1)
-		assert(res.errs[0] === 'type not match')
+		assert(res.errs[0].indexOf('type not match') > -1)
 
 	})
 
@@ -229,7 +229,7 @@ describe('exports.validate', function() {
 		obj.dt = new Date()
 		var res = validate(obj, rules)
 		assert(res.errCount === 1)
-		assert(res.errs[0] === 'format not right;')
+		assert(res.errs[0].indexOf('format not right;') > -1)
 
 	})
 
@@ -258,7 +258,7 @@ describe('exports.validate', function() {
 		obj.dt = new Date()
 		var res = validate(obj, rules)
 		assert(res.errCount === 1)
-		assert(res.errs[0] === 'custom validation fail;')
+		assert(res.errs[0] === 'st:custom validation fail;')
 		assert(res.errFields[0] === 'st')
 
 	})
@@ -362,7 +362,7 @@ describe('exports.validate', function() {
 		var res = validate(obj, rules)
 
 		assert(res.errCount === 2)
-		assert(res.errs[1] === 'custom validation fail;')
+		assert(res.errs[1] === 'mt:custom validation fail;')
 		assert(res.result.mt1 === 'xx')
 
 	})
@@ -400,6 +400,7 @@ describe('exports.validate', function() {
 			return this.rule.type + '0'
 		}
 		var res = validate(obj, rules)
+
 		assert(res.errCount === 1)
 		assert(res.result.mt === 'number0')
 
